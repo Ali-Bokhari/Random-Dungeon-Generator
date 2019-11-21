@@ -1,6 +1,7 @@
 package dungeon;
 
 import dnd.models.Monster;
+import dnd.models.Treasure;
 
 import java.util.ArrayList;
 /*
@@ -14,7 +15,9 @@ so that you know how to
 public class Passage extends Space {
   //these instance variables are suggestions only
   //you can change them if you wish.
-
+  private ArrayList<Treasure> treasures;
+  private ArrayList<Door> doors;
+  private ArrayList<Monster> monsters;
   /**
   * Holds the list of passages.
   */
@@ -26,6 +29,8 @@ public class Passage extends Space {
   */
   public Passage() {
   this.thePassage = new ArrayList<>();
+  this.doors = new ArrayList<>();
+  this.treasures = new ArrayList<>();
   }
 
 /**
@@ -42,15 +47,19 @@ public ArrayList<PassageSection> getPassage() {
 *
 * @return ArrayList of doors.
 */
-public ArrayList getDoors() {
+public ArrayList<Door> getDoors() {
 //gets all of the doors in the entire passage
-ArrayList<Door> doors = new ArrayList<>();
-for (PassageSection p: thePassage) {
-  if (p.getDoor() != null) {
-  doors.add(p.getDoor());
-  }
+//ArrayList<Door> doors = new ArrayList<>();
+//for (PassageSection p: thePassage) {
+  //if (p.getDoor() != null) {
+  //doors.add(p.getDoor());
+  //}
+//}
+return this.doors;
 }
-return doors;
+
+public void addDoor() {
+  this.doors.add(new Door());
 }
 
 /**
@@ -66,6 +75,10 @@ public Door getDoor(int i) {
   return this.thePassage.get(i).getDoor();
 }
 
+public void addTreasure(Treasure treasure) {
+  this.treasures.add(treasure);
+}
+
 /**
 * Add monster to PassageSection at index i.
 *
@@ -75,6 +88,10 @@ public Door getDoor(int i) {
 public void addMonster(Monster theMonster, int i) {
   // adds a monster to section 'i' of the passage
   this.thePassage.get(i).setMonster(theMonster);
+}
+
+public void addMonster(Monster theMonster) {
+  this.monsters.add(theMonster);
 }
 
 /**
@@ -97,6 +114,9 @@ return this.thePassage.get(i).getMonster();
 public void addPassageSection(PassageSection toAdd) {
   //adds the passage section to the passageway
   this.thePassage.add(toAdd);
+  if (toAdd.getDoor() != null) {
+    this.doors.add(toAdd.getDoor());
+  }
 }
 
 /**

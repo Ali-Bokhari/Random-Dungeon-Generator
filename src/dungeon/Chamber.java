@@ -102,6 +102,10 @@ public ArrayList<Door> getDoors() {
   return this.doors;
 }
 
+public void addDoor() {
+  this.doors.add(new Door());
+}
+
 /**
 * Add a monster.
 *

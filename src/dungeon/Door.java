@@ -186,6 +186,10 @@ public class Door {
   if (this.trapped) {
   toReturn += "\ntrap:" + getTrapDescription();
   }
+  if(this.spaces.size() > 1) {
+    toReturn += "\nLeads to " + spaces.get(1);
+  }
+  //toReturn += "\nLeads to " + spaces.get(1);
   return toReturn;
   }
 }

@@ -1,5 +1,9 @@
 package dungeon;
 
+import java.util.ArrayList;
+import dnd.models.Monster;
+import dnd.models.Treasure;
+
 public abstract class Space {
 
   /**
@@ -15,5 +19,13 @@ public abstract class Space {
   * @param theDoor the door to connect.
   */
   public abstract void setDoor(Door theDoor);
+
+  public abstract ArrayList<Door> getDoors();
+
+  public abstract void addDoor();
+
+  public abstract void addMonster(Monster theMonster);
+
+  public abstract void addTreasure(Treasure treasure);
 
 }
