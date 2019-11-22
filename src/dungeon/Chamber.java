@@ -120,8 +120,12 @@ public void addMonster(Monster theMonster) {
 *
 * @return Arraylist of monsters.
 */
-public ArrayList<Monster> getMonsters() {
-  return this.monsters;
+public ArrayList<String> getMonsters() {
+  ArrayList<String> monsterS = new ArrayList<>();
+  for (Monster m: this.monsters) {
+    monsterS.add(m.getDescription());
+  }
+  return monsterS;
 }
 
 /**
@@ -138,8 +142,12 @@ public void addTreasure(Treasure theTreasure) {
 *
 * @return ArrayList of treasures.
 */
-public ArrayList<Treasure> getTreasureList() {
-  return this.treasures;
+public ArrayList<String> getTreasureList() {
+  ArrayList<String> treasureS = new ArrayList<>();
+  for (Treasure t: this.treasures) {
+    treasureS.add(t.getDescription());
+  }
+  return treasureS;
 }
 
 

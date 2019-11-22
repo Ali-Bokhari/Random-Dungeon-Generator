@@ -28,4 +28,8 @@ public abstract class Space {
 
   public abstract void addTreasure(Treasure treasure);
 
+  public abstract ArrayList<String> getMonsters();
+
+  public abstract ArrayList<String> getTreasureList();
+
 }

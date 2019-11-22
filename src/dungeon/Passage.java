@@ -31,6 +31,7 @@ public class Passage extends Space {
   this.thePassage = new ArrayList<>();
   this.doors = new ArrayList<>();
   this.treasures = new ArrayList<>();
+  this.monsters = new ArrayList<>();
   }
 
 /**
@@ -71,12 +72,19 @@ public void addDoor() {
 */
 public Door getDoor(int i) {
   //returns the door in section 'i'. If there is no door, returns null
-
   return this.thePassage.get(i).getDoor();
 }
 
 public void addTreasure(Treasure treasure) {
   this.treasures.add(treasure);
+}
+
+public ArrayList<String> getTreasureList() {
+  ArrayList<String> treasureS = new ArrayList<>();
+  for (Treasure t: this.treasures) {
+    treasureS.add(t.getDescription());
+  }
+  return treasureS;
 }
 
 /**
@@ -104,6 +112,22 @@ public void addMonster(Monster theMonster) {
 public Monster getMonster(int i) {
   //returns Monster door in section 'i'. If there is no Monster, returns null
 return this.thePassage.get(i).getMonster();
+}
+
+public ArrayList<String> getMonsters() {
+  ArrayList<String> monsterss = new ArrayList<>();
+
+  for(PassageSection p: this.thePassage) {
+    if (p.getMonster() != null) {
+      monsterss.add(p.getMonster().getDescription());
+    }
+  }
+
+  for(Monster m: this.monsters){
+    monsterss.add(m.getDescription());
+  }
+
+  return monsterss;
 }
 
 /**

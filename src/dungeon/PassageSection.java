@@ -56,6 +56,7 @@ public PassageSection(String d) {
   this.chamber = true;
   } else if (description.contains("Monster")) {
   this.monster = new Monster();
+  this.monster.setType(42);
   }
 }
 
