@@ -12,12 +12,14 @@ You will need to keep track of which door is the "beginning" of the passage
 so that you know how to
 */
 
-public class Passage extends Space {
+public class Passage extends Space{
   //these instance variables are suggestions only
   //you can change them if you wish.
   private ArrayList<Treasure> treasures;
   private ArrayList<Door> doors;
   private ArrayList<Monster> monsters;
+  private static int amount = 0;
+  private String name;
   /**
   * Holds the list of passages.
   */
@@ -32,6 +34,8 @@ public class Passage extends Space {
   this.doors = new ArrayList<>();
   this.treasures = new ArrayList<>();
   this.monsters = new ArrayList<>();
+  this.amount++;
+  name = "Passage " + this.amount;
   }
 
 /**
@@ -87,6 +91,10 @@ public ArrayList<String> getTreasureList() {
   return treasureS;
 }
 
+public void removeTreasure(int n) {
+  this.treasures.remove(n);
+}
+
 /**
 * Add monster to PassageSection at index i.
 *
@@ -117,17 +125,15 @@ return this.thePassage.get(i).getMonster();
 public ArrayList<String> getMonsters() {
   ArrayList<String> monsterss = new ArrayList<>();
 
-  for(PassageSection p: this.thePassage) {
-    if (p.getMonster() != null) {
-      monsterss.add(p.getMonster().getDescription());
-    }
-  }
-
   for(Monster m: this.monsters){
     monsterss.add(m.getDescription());
   }
 
   return monsterss;
+}
+
+public void removeMonster(int n) {
+  this.monsters.remove(n);
 }
 
 /**
@@ -140,6 +146,9 @@ public void addPassageSection(PassageSection toAdd) {
   this.thePassage.add(toAdd);
   if (toAdd.getDoor() != null) {
     this.doors.add(toAdd.getDoor());
+  }
+  if(toAdd.getMonster() != null) {
+    this.monsters.add(toAdd.getMonster());
   }
 }
 
@@ -173,6 +182,19 @@ public String getDescription() {
   for (PassageSection p: thePassage) {
   toReturn += p.getDescription() + "\n";
   }
+  toReturn += "Content:\n";
+  for(Monster m: this.monsters) {
+    toReturn += m.getDescription() + "\n";
+  }
+  for(Treasure t: this.treasures) {
+    toReturn += t.getDescription() + "\n";
+  }
 return toReturn;
 }
+
+@Override
+public String toString() {
+  return this.name;
+}
+
 }

@@ -35,6 +35,10 @@ public class Chamber extends Space {
   */
   private ArrayList<Treasure> treasures;
 
+  private static int amount = 0;
+
+  private String name;
+
 /**
 * Creates Chamber object.
 */
@@ -48,6 +52,8 @@ public Chamber() {
   //this.mySize.setShape();
   this.mySize.setNumExits();
   fillContent();
+  this.amount++;
+  this.name = "Chamber " + this.amount;
 }
 
 /**
@@ -128,6 +134,10 @@ public ArrayList<String> getMonsters() {
   return monsterS;
 }
 
+public void removeMonster(int n) {
+  this.monsters.remove(n);
+}
+
 /**
 * Add treasure to the chamber.
 *
@@ -150,6 +160,10 @@ public ArrayList<String> getTreasureList() {
   return treasureS;
 }
 
+public void removeTreasure(int n) {
+  this.treasures.remove(n);
+}
+
 
 /**
 * Produces a string representation of the chamber.
@@ -159,9 +173,8 @@ public ArrayList<String> getTreasureList() {
 @Override
 public String getDescription() {
   String toReturn = "Chamber shape:\n" + this.mySize.getShape() + "\n";
-  for (int i = 0; i < this.mySize.getNumExits(); i++) {
-    Door dooor = new Door();
-    toReturn += dooor.getDescription() + "\n";
+  for (Door d: this.doors) {
+    toReturn += d.getDescription() + "\n";
   }
   toReturn += "\nChamber contents:\n" + this.myContents.getDescription() + " ";
   for (Monster m: this.monsters) {
@@ -238,4 +251,10 @@ public void setDoor(Door newDoor) {
   }
   return false;
   }
+
+  @Override
+  public String toString() {
+    return this.name;
+  }
+
 }

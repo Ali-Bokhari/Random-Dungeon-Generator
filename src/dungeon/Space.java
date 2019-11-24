@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import dnd.models.Monster;
 import dnd.models.Treasure;
 
-public abstract class Space {
+public abstract class Space implements java.io.Serializable {
 
   /**
   * Produce string representation of the space.
@@ -31,5 +31,9 @@ public abstract class Space {
   public abstract ArrayList<String> getMonsters();
 
   public abstract ArrayList<String> getTreasureList();
+
+  public abstract void removeMonster(int n);
+
+  public abstract void removeTreasure(int n);
 
 }

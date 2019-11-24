@@ -10,13 +10,19 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 import javafx.scene.control.TextArea;
+import java.io.*;
 
 import java.util.ArrayList;
 
 public class DungeonGUI extends Application {
     //Model
+    ArrayList<Space> basicSpaces;
     ObservableList<Space> spaces;
     ObservableList<Door> doorList;
     private ListView<Space> spacesListView;
@@ -34,16 +40,23 @@ public class DungeonGUI extends Application {
     }
     public void initChamber() {
 
-        ArrayList<Space> spaces2 = new ArrayList<>();
+        basicSpaces = new ArrayList<>();
         Level newLevel = new Level();
-        spaces2 = newLevel.generate();
-        spaces = FXCollections.observableArrayList(spaces2);
+        basicSpaces = newLevel.generate();
+        spaces = FXCollections.observableArrayList(basicSpaces);
     }
     @Override
     public void start(Stage stage) throws Exception {
         HBox rootNode = new HBox(20);
         VBox leftNode = new VBox(10);
-        leftNode.getChildren().addAll(spacesListView, addButton);
+        Menu fileMenu = new Menu("File");
+        MenuBar menubar = new MenuBar();
+        menubar.getMenus().add(fileMenu);
+        MenuItem m1 = new MenuItem("Save File");
+        MenuItem m2 = new MenuItem("Load File");
+        fileMenu.getItems().add(m1);
+        fileMenu.getItems().add(m2);
+        leftNode.getChildren().addAll(menubar, spacesListView, addButton);
         rootNode.getChildren().addAll(leftNode,descriptionText,doorListView);
         Scene scene = new Scene(rootNode, 1000, 400);
 
@@ -67,6 +80,14 @@ public class DungeonGUI extends Application {
             doorStage.show();
         });
 
+        m1.setOnAction(e->{
+            saveState(stage);
+        });
+
+        m2.setOnAction(e->{
+            loadState(stage);
+        });
+
         addButton.setOnAction(e->{
             EditStage editStage = new EditStage(spacesListView);
             editStage.show();
@@ -74,6 +95,44 @@ public class DungeonGUI extends Application {
         stage.setTitle("Java FX demo");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void saveState(Stage stage) {
+      try {
+        FileChooser choose = new FileChooser();
+        File file = choose.showSaveDialog(stage);
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+        this.spaces = this.spacesListView.getItems();
+        this.basicSpaces = new ArrayList<Space>(this.spaces);
+        out.writeObject(this.basicSpaces);
+        out.close();
+      }
+      catch (IOException e) {
+
+      }
+    }
+
+    public void loadState(Stage stage) {
+      try
+        {
+          FileChooser choose = new FileChooser();
+          File file = choose.showOpenDialog(stage);
+          ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+          this.basicSpaces = (ArrayList<Space>)in.readObject();
+          this.spaces = FXCollections.observableArrayList(this.basicSpaces);
+          this.spacesListView.setItems(this.spaces);
+          in.close();
+        }
+
+        catch(IOException ex)
+        {
+          System.out.println(ex);
+        }
+
+        catch(ClassNotFoundException ex)
+        {
+          System.out.println(ex);
+        }
     }
     public static void main(String [] args) {
         Application.launch(args);

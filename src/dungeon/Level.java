@@ -41,9 +41,9 @@ final class Level {
       spaces.add(newChamber);
       //System.out.println("************************\n" + newPassage.getDescription() + "************************\n|\nv\n************************\n" + newChamber.getDescription() + "************************");
     }
-    for (Space s: spaces) {
-      System.out.println(s.getDescription());
-    }
+    //for (Space s: spaces) {
+      //System.out.println(s.getDescription());
+    //}
     return spaces;
   }
 }

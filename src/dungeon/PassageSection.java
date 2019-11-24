@@ -4,7 +4,7 @@ import dnd.models.Monster;
 
 /* Represents a 10 ft section of passageway */
 
-public class PassageSection {
+public class PassageSection implements java.io.Serializable {
 
   /**
   * Holds descrition from Table A for the door.
