@@ -118,6 +118,9 @@ public class DungeonGUI extends Application {
 
         addButton.setOnAction(e->{
             EditStage editStage = new EditStage(spacesListView);
+            editStage.setOnCloseRequest(event -> {
+              descriptionText.setText(spacesListView.getSelectionModel().getSelectedItem().getDescription());
+            });
             editStage.show();
         });
 
