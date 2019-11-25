@@ -20,8 +20,11 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.stage.Stage;
 
-public class EditStage extends javafx.stage.Stage {
+public class EditStage extends Stage {
 
   private Scene editScene;
   private Button monsterButton;
@@ -44,12 +47,10 @@ public class EditStage extends javafx.stage.Stage {
   private ListView<String> treasures;
   private Spinner<Integer> treasureSpinner;
   private Label treasureLabel;
-  private GridPane pane;
   private ListView<Space> spacesListView;
   public EditStage(ListView<Space> SListView) {
     super();
     this.spacesListView = SListView;
-    mainBox = new VBox(20);
     edits = new VBox(10);
     edits.setPadding(new Insets(10));
     monsterHbox = new HBox(10);
@@ -59,7 +60,6 @@ public class EditStage extends javafx.stage.Stage {
     monsterListVbox.setAlignment(Pos.CENTER);
     treasureListVbox = new VBox(5);
     treasureListVbox.setAlignment(Pos.CENTER);
-    pane = buildGraphic();
     monsterLabel = new Label("Pick monster with 1-100 roll");
     treasureLabel = new Label("Pick treasure with 1-100 roll");
     monsterButton = new Button("Add Monster");
@@ -80,7 +80,6 @@ public class EditStage extends javafx.stage.Stage {
     treasureHbox.getChildren().addAll(treasureSpinner, treasureButton);
     edits.getChildren().addAll(monsterLabel, monsterHbox, treasureLabel, treasureHbox);
     hedits.getChildren().addAll(edits, monsterListVbox, treasureListVbox);
-    mainBox.getChildren().addAll(hedits, pane);
 
 
     //Percentile d100 = new Percentile();
@@ -117,22 +116,7 @@ public class EditStage extends javafx.stage.Stage {
         //spacesListView.getSelectionModel().getSelectedItem().addDoor();
     //});
 
-    editScene = new Scene(mainBox);
+    editScene = new Scene(hedits, 800, 150);
     this.setScene(editScene);
   }
-
-  public GridPane buildGraphic() {
-    GridPane view = new GridPane();
-    Image image = new Image("res/door.png");
-
-    for (int i=0; i<5; i++) {
-      ImageView pic = new ImageView(image);
-      pic.setFitWidth(50);
-      pic.setFitHeight(50);
-      view.add(pic,i,0);
-    }
-    return view;
-  }
-
-
 }

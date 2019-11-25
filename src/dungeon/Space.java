@@ -30,7 +30,11 @@ public abstract class Space implements java.io.Serializable {
 
   public abstract ArrayList<String> getMonsters();
 
+  public abstract ArrayList<Monster> getMonstersO();
+
   public abstract ArrayList<String> getTreasureList();
+
+  public abstract ArrayList<Treasure> getTreasures();
 
   public abstract void removeMonster(int n);
 

@@ -42,6 +42,10 @@ public class Door implements java.io.Serializable {
   */
   private ArrayList<Space> spaces;
 
+  private static int amount = 0;
+
+  private String name;
+
   /**
   * Create a door object and randomize generation of door attributes.
   */
@@ -58,6 +62,8 @@ public class Door implements java.io.Serializable {
     } else if (random20 < 7) {
       setArchway(true);
     }
+    this.amount++;
+    this.name = "Door " + this.amount;
   }
 
   /**
@@ -191,5 +197,10 @@ public class Door implements java.io.Serializable {
   }
   //toReturn += "\nLeads to " + spaces.get(1);
   return toReturn;
+  }
+
+  @Override
+  public String toString() {
+    return this.name;
   }
 }

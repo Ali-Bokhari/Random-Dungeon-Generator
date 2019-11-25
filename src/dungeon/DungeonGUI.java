@@ -17,8 +17,18 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.scene.control.TextArea;
 import java.io.*;
-
+import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundFill;
+import dnd.models.Monster;
+import dnd.models.Treasure;
 import java.util.ArrayList;
+import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.CornerRadii;
 
 public class DungeonGUI extends Application {
     //Model
@@ -28,6 +38,8 @@ public class DungeonGUI extends Application {
     private ListView<Space> spacesListView;
     private ListView<Door> doorListView;
     private Button addButton;
+    private Button graphic;
+    //private GridPane view;
     private TextArea descriptionText;
     public DungeonGUI(){
         initChamber();
@@ -36,6 +48,8 @@ public class DungeonGUI extends Application {
         doorListView = new ListView<Door>(doorList);
         addButton = new Button("Edit");
         descriptionText = new TextArea();
+        descriptionText.setEditable(false);
+        graphic = new Button("View");
         //descriptionText.setPrefS(250);
     }
     public void initChamber() {
@@ -49,6 +63,7 @@ public class DungeonGUI extends Application {
     public void start(Stage stage) throws Exception {
         HBox rootNode = new HBox(20);
         VBox leftNode = new VBox(10);
+        HBox buttons = new HBox(20);
         Menu fileMenu = new Menu("File");
         MenuBar menubar = new MenuBar();
         menubar.getMenus().add(fileMenu);
@@ -56,7 +71,9 @@ public class DungeonGUI extends Application {
         MenuItem m2 = new MenuItem("Load File");
         fileMenu.getItems().add(m1);
         fileMenu.getItems().add(m2);
-        leftNode.getChildren().addAll(menubar, spacesListView, addButton);
+        buttons.getChildren().addAll(addButton, graphic);
+        buttons.setPadding(new Insets(10));
+        leftNode.getChildren().addAll(menubar, spacesListView, buttons);
         rootNode.getChildren().addAll(leftNode,descriptionText,doorListView);
         Scene scene = new Scene(rootNode, 1000, 400);
 
@@ -92,6 +109,18 @@ public class DungeonGUI extends Application {
             EditStage editStage = new EditStage(spacesListView);
             editStage.show();
         });
+
+        graphic.setOnAction(e->{
+            Stage viewStage = new Stage();
+            viewStage.setTitle("View");
+            GridPane pane = new GridPane();
+            buildGraphic(pane);
+            //pane.setPadding(new Insets(10));
+            Scene viewScene = new Scene(pane, 500, 500);
+            viewStage.setScene(viewScene);
+            viewStage.show();
+        });
+
         stage.setTitle("Java FX demo");
         stage.setScene(scene);
         stage.show();
@@ -134,6 +163,116 @@ public class DungeonGUI extends Application {
           System.out.println(ex);
         }
     }
+
+    public void buildGraphic( GridPane view ) {
+      if (spacesListView.getSelectionModel().getSelectedItem() instanceof Passage) {
+        buildGraphicPassage(view, (Passage)spacesListView.getSelectionModel().getSelectedItem());
+        return;
+      }
+      view.setBackground( new Background(new BackgroundImage(new Image("res/back3.png"), null, null, null, null)));
+      Image image = new Image("res/door.png");
+      int i = 1;
+      for (Door d: spacesListView.getSelectionModel().getSelectedItem().getDoors()) {
+        ImageView pic = new ImageView(image);
+        pic.setFitWidth(50);
+        pic.setFitHeight(50);
+        pic.setOnMouseClicked((MouseEvent e) -> {
+          Stage doorStage = new Stage();
+          TextArea doorText = new TextArea();
+          doorStage.setTitle("Door description");
+          Scene doorScene = new Scene(doorText);
+          doorText.setText(d.getDescription());
+          doorStage.setScene(doorScene);
+          doorStage.show();
+        });
+        if(i%2==0) {
+          view.add(pic,i+1,0);
+        } else {
+          view.add(pic,0,i-1);
+        }
+        i++;
+      }
+      i = 4;
+      image = new Image("res/monster.png");
+      for (Monster m: spacesListView.getSelectionModel().getSelectedItem().getMonstersO()) {
+        ImageView pic = new ImageView(image);
+        pic.setFitWidth(50);
+        pic.setFitHeight(50);
+        pic.setOnMouseClicked((MouseEvent e) -> {
+          Stage doorStage = new Stage();
+          TextArea doorText = new TextArea();
+          doorStage.setTitle("Monster description");
+          Scene doorScene = new Scene(doorText);
+          doorText.setText(m.getDescription());
+          doorStage.setScene(doorScene);
+          doorStage.show();
+        });
+        view.add(pic,i/2,i);
+        i = i + 3;
+      }
+      i = 2;
+      image = new Image("res/treasure.png");
+      for (Treasure m: spacesListView.getSelectionModel().getSelectedItem().getTreasures()) {
+        ImageView pic = new ImageView(image);
+        pic.setFitWidth(50);
+        pic.setFitHeight(50);
+        pic.setOnMouseClicked((MouseEvent e) -> {
+          Stage doorStage = new Stage();
+          TextArea doorText = new TextArea();
+          doorStage.setTitle("Treasure description");
+          Scene doorScene = new Scene(doorText);
+          doorText.setText(m.getDescription());
+          doorStage.setScene(doorScene);
+          doorStage.show();
+        });
+        view.add(pic,i,i/2);
+        i = i + 3;
+      }
+    }
+
+    public void buildGraphicPassage( GridPane view, Passage p ) {
+      view.setBackground( new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+      String temp;
+      int i=0,j=5;
+
+      view.add(new HBox(), 0,0);
+
+      Image image = new Image("res/back3.png");
+      Image doorimage = new Image("res/door.png");
+      for (PassageSection ps: p.getPassage()) {
+        temp = ps.getRollDescription();
+        if(temp.contains("straight")){
+          ImageView pic = new ImageView(image);
+          pic.setFitWidth(50);
+          pic.setFitHeight(50);
+          view.add(pic, i, j);
+          i++;
+        } else if(temp.contains("turns to left")) {
+          ImageView pic = new ImageView(image);
+          pic.setFitWidth(50);
+          pic.setFitHeight(50);
+          view.add(pic, i, j);
+          j--;
+        } else if(temp.contains("turns to right")) {
+          ImageView pic = new ImageView(image);
+          pic.setFitWidth(50);
+          pic.setFitHeight(50);
+          view.add(pic, i, j);
+          j++;
+        } else {
+          ImageView pic = new ImageView(image);
+          ImageView pic2 = new ImageView(doorimage);
+          pic.setFitWidth(50);
+          pic.setFitHeight(50);
+          pic2.setFitWidth(50);
+          pic2.setFitHeight(50);
+          view.add(pic, i, j);
+          view.add(pic2, i, j);
+          j++;
+        }
+      }
+    }
+
     public static void main(String [] args) {
         Application.launch(args);
     }

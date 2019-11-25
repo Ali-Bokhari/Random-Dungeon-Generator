@@ -52,8 +52,8 @@ public Chamber() {
   //this.mySize.setShape();
   this.mySize.setNumExits();
   fillContent();
-  this.amount++;
   this.name = "Chamber " + this.amount;
+  this.amount++;
 }
 
 /**
@@ -134,6 +134,10 @@ public ArrayList<String> getMonsters() {
   return monsterS;
 }
 
+public ArrayList<Monster> getMonstersO() {
+  return this.monsters;
+}
+
 public void removeMonster(int n) {
   this.monsters.remove(n);
 }
@@ -158,6 +162,10 @@ public ArrayList<String> getTreasureList() {
     treasureS.add(t.getDescription());
   }
   return treasureS;
+}
+
+public ArrayList<Treasure> getTreasures() {
+  return this.treasures;
 }
 
 public void removeTreasure(int n) {
@@ -194,7 +202,7 @@ public String getDescription() {
 @Override
 public void setDoor(Door newDoor) {
   //should add a door connection to this room
-  this.doors.add(newDoor);
+  //this.doors.add(newDoor);
   newDoor.getSpaces().add(this);
 }
 
@@ -216,7 +224,7 @@ public void setDoor(Door newDoor) {
     this.doors = new ArrayList<>();
     for (int i = 0; i < this.mySize.getNumExits(); i++) {
       Door dooor = new Door();
-      dooor.getSpaces().add(this);
+      //dooor.getSpaces().add(this);
       this.doors.add(dooor);
     }
   }

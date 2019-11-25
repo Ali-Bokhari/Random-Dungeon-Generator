@@ -91,6 +91,10 @@ public ArrayList<String> getTreasureList() {
   return treasureS;
 }
 
+public ArrayList<Treasure> getTreasures() {
+  return this.treasures;
+}
+
 public void removeTreasure(int n) {
   this.treasures.remove(n);
 }
@@ -130,6 +134,10 @@ public ArrayList<String> getMonsters() {
   }
 
   return monsterss;
+}
+
+public ArrayList<Monster> getMonstersO() {
+  return this.monsters;
 }
 
 public void removeMonster(int n) {
