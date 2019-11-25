@@ -88,11 +88,22 @@ public class DungeonGUI extends Application {
         doorListView.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             Stage doorStage = new Stage();
             TextArea doorText = new TextArea();
+            HBox doorHbox = new HBox(20);
+            doorHbox.getChildren().add(doorText);
             doorStage.setTitle("Door description");
-            Scene doorScene = new Scene(doorText);
             doorText.setText(doorListView.getSelectionModel().getSelectedItem().getDescription());
             //doorList.addAll(spacesListView.getSelectionModel().getSelectedItem().getDoors());
             //descriptionText.setText(spacesListView.getSelectionModel().getSelectedItem().getDescription());
+            if(doorListView.getSelectionModel().getSelectedItem().getSpaces().size() > 1) {
+              //ArrayList<Space> temptemp = new ArrayList<>(spacesListView.getItems());
+              Button gotonext = new Button("View path");
+              doorHbox.getChildren().add(gotonext);
+              gotonext.setOnAction(e->{
+                  spacesListView.getSelectionModel().selectIndices(spacesListView.getSelectionModel().getSelectedIndices().get(0) + 1);
+                  graphic.fire();
+              });
+            }
+            Scene doorScene = new Scene(doorHbox);
             doorStage.setScene(doorScene);
             doorStage.show();
         });
@@ -121,7 +132,7 @@ public class DungeonGUI extends Application {
             viewStage.show();
         });
 
-        stage.setTitle("Java FX demo");
+        stage.setTitle("Dungeon");
         stage.setScene(scene);
         stage.show();
     }
@@ -174,8 +185,8 @@ public class DungeonGUI extends Application {
       int i = 1;
       for (Door d: spacesListView.getSelectionModel().getSelectedItem().getDoors()) {
         ImageView pic = new ImageView(image);
-        pic.setFitWidth(50);
-        pic.setFitHeight(50);
+        pic.setFitWidth(70);
+        pic.setFitHeight(70);
         pic.setOnMouseClicked((MouseEvent e) -> {
           Stage doorStage = new Stage();
           TextArea doorText = new TextArea();
@@ -196,8 +207,8 @@ public class DungeonGUI extends Application {
       image = new Image("res/monster.png");
       for (Monster m: spacesListView.getSelectionModel().getSelectedItem().getMonstersO()) {
         ImageView pic = new ImageView(image);
-        pic.setFitWidth(50);
-        pic.setFitHeight(50);
+        pic.setFitWidth(70);
+        pic.setFitHeight(70);
         pic.setOnMouseClicked((MouseEvent e) -> {
           Stage doorStage = new Stage();
           TextArea doorText = new TextArea();
@@ -214,8 +225,8 @@ public class DungeonGUI extends Application {
       image = new Image("res/treasure.png");
       for (Treasure m: spacesListView.getSelectionModel().getSelectedItem().getTreasures()) {
         ImageView pic = new ImageView(image);
-        pic.setFitWidth(50);
-        pic.setFitHeight(50);
+        pic.setFitWidth(70);
+        pic.setFitHeight(70);
         pic.setOnMouseClicked((MouseEvent e) -> {
           Stage doorStage = new Stage();
           TextArea doorText = new TextArea();
@@ -233,42 +244,109 @@ public class DungeonGUI extends Application {
     public void buildGraphicPassage( GridPane view, Passage p ) {
       view.setBackground( new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
       String temp;
-      int i=0,j=5;
-
-      view.add(new HBox(), 0,0);
+      Boolean inv = false;
+      int i=0,j=10,l;
 
       Image image = new Image("res/back3.png");
+      Image monsterimage = new Image("res/monster.png");
+      Image treasureimage = new Image("res/treasure.png");
       Image doorimage = new Image("res/door.png");
       for (PassageSection ps: p.getPassage()) {
         temp = ps.getRollDescription();
         if(temp.contains("straight")){
           ImageView pic = new ImageView(image);
-          pic.setFitWidth(50);
-          pic.setFitHeight(50);
+          pic.setFitWidth(80);
+          pic.setFitHeight(80);
           view.add(pic, i, j);
-          i++;
+          if(ps.getMonster() != null) {
+            ImageView monsterview = new ImageView(monsterimage);
+            monsterview.setFitWidth(80);
+            monsterview.setFitHeight(80);
+            view.add(monsterview, i, j);
+          }
+          //if(inv) {
+            //j++;
+          //} else {
+            i++;
+          //}
+          pic = new ImageView(image);
+          pic.setFitWidth(80);
+          pic.setFitHeight(80);
+          view.add(pic, i, j);
+          if(ps.getTreasure() != null) {
+            ImageView treasureview = new ImageView(treasureimage);
+            treasureview.setFitWidth(80);
+            treasureview.setFitHeight(80);
+            view.add(treasureview, i, j);
+          }
         } else if(temp.contains("turns to left")) {
           ImageView pic = new ImageView(image);
-          pic.setFitWidth(50);
-          pic.setFitHeight(50);
-          view.add(pic, i, j);
+          pic.setFitWidth(80);
+          pic.setFitHeight(80);
           j--;
+          view.add(pic, i, j);
+          if(ps.getMonster() != null) {
+            ImageView monsterview = new ImageView(monsterimage);
+            monsterview.setFitWidth(80);
+            monsterview.setFitHeight(80);
+            view.add(monsterview, i, j);
+          }
+          j--;
+          pic = new ImageView(image);
+          pic.setFitWidth(80);
+          pic.setFitHeight(80);
+          view.add(pic, i, j);
+          if(ps.getTreasure() != null) {
+            ImageView treasureview = new ImageView(treasureimage);
+            treasureview.setFitWidth(80);
+            treasureview.setFitHeight(80);
+            view.add(treasureview, i, j);
+          }
         } else if(temp.contains("turns to right")) {
           ImageView pic = new ImageView(image);
-          pic.setFitWidth(50);
-          pic.setFitHeight(50);
-          view.add(pic, i, j);
+          pic.setFitWidth(80);
+          pic.setFitHeight(80);
           j++;
+          view.add(pic, i, j);
+          if(ps.getMonster() != null) {
+            ImageView monsterview = new ImageView(monsterimage);
+            monsterview.setFitWidth(80);
+            monsterview.setFitHeight(80);
+            view.add(monsterview, i, j);
+          }
+          pic = new ImageView(image);
+          pic.setFitWidth(80);
+          pic.setFitHeight(80);
+          j++;
+          view.add(pic, i, j);
+          if(ps.getTreasure() != null) {
+            ImageView treasureview = new ImageView(treasureimage);
+            treasureview.setFitWidth(80);
+            treasureview.setFitHeight(80);
+            view.add(treasureview, i, j);
+          }
         } else {
           ImageView pic = new ImageView(image);
           ImageView pic2 = new ImageView(doorimage);
-          pic.setFitWidth(50);
-          pic.setFitHeight(50);
-          pic2.setFitWidth(50);
-          pic2.setFitHeight(50);
+          pic.setFitWidth(80);
+          pic.setFitHeight(80);
+          pic2.setFitWidth(80);
+          pic2.setFitHeight(80);
+          i++;
           view.add(pic, i, j);
+          if(ps.getMonster() != null) {
+            ImageView monsterview = new ImageView(monsterimage);
+            monsterview.setFitWidth(80);
+            monsterview.setFitHeight(80);
+            view.add(monsterview, i, j);
+          }
+          if(ps.getTreasure() != null) {
+            ImageView treasureview = new ImageView(treasureimage);
+            treasureview.setFitWidth(80);
+            treasureview.setFitHeight(80);
+            view.add(treasureview, i, j);
+          }
           view.add(pic2, i, j);
-          j++;
         }
       }
     }

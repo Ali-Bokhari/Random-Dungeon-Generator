@@ -15,9 +15,9 @@ so that you know how to
 public class Passage extends Space{
   //these instance variables are suggestions only
   //you can change them if you wish.
-  private ArrayList<Treasure> treasures;
+  //private ArrayList<Treasure> treasures;
   private ArrayList<Door> doors;
-  private ArrayList<Monster> monsters;
+  //private ArrayList<Monster> monsters;
   private static int amount = 0;
   private String name;
   /**
@@ -32,8 +32,8 @@ public class Passage extends Space{
   public Passage() {
   this.thePassage = new ArrayList<>();
   this.doors = new ArrayList<>();
-  this.treasures = new ArrayList<>();
-  this.monsters = new ArrayList<>();
+  //this.treasures = new ArrayList<>();
+  //this.monsters = new ArrayList<>();
   this.amount++;
   name = "Passage " + this.amount;
   }
@@ -80,23 +80,45 @@ public Door getDoor(int i) {
 }
 
 public void addTreasure(Treasure treasure) {
-  this.treasures.add(treasure);
+  for(PassageSection p: this.thePassage) {
+    if(p.getTreasure() == null) {
+      p.setTreasure(treasure);
+      return;
+    }
+  }
 }
 
 public ArrayList<String> getTreasureList() {
   ArrayList<String> treasureS = new ArrayList<>();
-  for (Treasure t: this.treasures) {
-    treasureS.add(t.getDescription());
+  for (PassageSection p: this.thePassage) {
+    if(p.getTreasure() != null) {
+      treasureS.add(p.getTreasure().getDescription());
+    }
   }
   return treasureS;
 }
 
 public ArrayList<Treasure> getTreasures() {
-  return this.treasures;
+  ArrayList<Treasure> toReturn = new ArrayList<>();
+  for(PassageSection p: this.thePassage) {
+    if(p.getTreasure() != null) {
+      toReturn.add(p.getTreasure());
+    }
+  }
+  return toReturn;
 }
 
 public void removeTreasure(int n) {
-  this.treasures.remove(n);
+  ArrayList<Treasure> toReturn = new ArrayList<>();
+  int i = 0;
+  for(PassageSection p: this.thePassage) {
+    if(p.getTreasure() != null) {
+      if(i==n) {
+        p.setTreasure(null);
+      }
+      i++;
+    }
+  }
 }
 
 /**
@@ -111,7 +133,12 @@ public void addMonster(Monster theMonster, int i) {
 }
 
 public void addMonster(Monster theMonster) {
-  this.monsters.add(theMonster);
+  for(PassageSection p: this.thePassage) {
+    if(p.getMonster() == null) {
+      p.setMonster(theMonster);
+      return;
+    }
+  }
 }
 
 /**
@@ -129,19 +156,38 @@ return this.thePassage.get(i).getMonster();
 public ArrayList<String> getMonsters() {
   ArrayList<String> monsterss = new ArrayList<>();
 
-  for(Monster m: this.monsters){
-    monsterss.add(m.getDescription());
+  for(PassageSection p: this.thePassage){
+    if(p.getMonster() != null) {
+      monsterss.add(p.getMonster().getDescription());
+    }
   }
 
   return monsterss;
 }
 
 public ArrayList<Monster> getMonstersO() {
-  return this.monsters;
+  ArrayList<Monster> monsterss = new ArrayList<>();
+
+  for(PassageSection p: this.thePassage){
+    if(p.getMonster() != null) {
+      monsterss.add(p.getMonster());
+    }
+  }
+
+  return monsterss;
 }
 
 public void removeMonster(int n) {
-  this.monsters.remove(n);
+  ArrayList<Monster> toReturn = new ArrayList<>();
+  int i = 0;
+  for(PassageSection p: this.thePassage) {
+    if(p.getMonster() != null) {
+      if(i==n) {
+        p.setMonster(null);
+      }
+      i++;
+    }
+  }
 }
 
 /**
@@ -155,9 +201,9 @@ public void addPassageSection(PassageSection toAdd) {
   if (toAdd.getDoor() != null) {
     this.doors.add(toAdd.getDoor());
   }
-  if(toAdd.getMonster() != null) {
-    this.monsters.add(toAdd.getMonster());
-  }
+  //if(toAdd.getMonster() != null) {
+    //this.monsters.add(toAdd.getMonster());
+  //}
 }
 
 /**
@@ -191,10 +237,10 @@ public String getDescription() {
   toReturn += p.getDescription() + "\n";
   }
   toReturn += "Content:\n";
-  for(Monster m: this.monsters) {
+  for(Monster m: this.getMonstersO()) {
     toReturn += m.getDescription() + "\n";
   }
-  for(Treasure t: this.treasures) {
+  for(Treasure t: this.getTreasures()) {
     toReturn += t.getDescription() + "\n";
   }
 return toReturn;

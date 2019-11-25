@@ -1,6 +1,7 @@
 package dungeon;
 
 import dnd.models.Monster;
+import dnd.models.Treasure;
 
 /* Represents a 10 ft section of passageway */
 
@@ -25,6 +26,8 @@ public class PassageSection implements java.io.Serializable {
   * Holds ifChamber bool.
   */
   private boolean chamber;
+
+  private Treasure treasure;
 
 
 /**
@@ -96,6 +99,25 @@ return this.monster;
 */
 public void setMonster(Monster newMonster) {
   this.monster = newMonster;
+}
+
+/**
+* Get the monster from this section.
+*
+* @return the monster.
+*/
+public Treasure getTreasure() {
+  //returns the monster that is in the passage section, if there is one
+return this.treasure;
+}
+
+/**
+* Setup a monster in this section.
+*
+* @param trea The Monster.
+*/
+public void setTreasure(Treasure trea) {
+  this.treasure = trea;
 }
 
 /**
