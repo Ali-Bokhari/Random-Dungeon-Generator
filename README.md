@@ -2,6 +2,8 @@ Ali Bokhari
 abokhari@uoguelph.ca
 0970498
 
+Run: 'ant runme'
+
 Optional Features:
 
 When a chamber or passage is selected from the main window a graphical rendering of the chamber is displayed in addition to the textual description.
